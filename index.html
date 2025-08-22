@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đếm ngược đến Phú Quốc 🏝️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            min-height: 100vh;
+            background: linear-gradient(135deg, 
+                #87CEEB 0%, 
+                #00BFFF 50%, 
+                #1E90FF 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 12s ease infinite;
+            position: relative;
+        }
+
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 50% 100%; }
+            75% { background-position: 100% 0%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .ocean {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(to bottom, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(135, 206, 235, 0.2) 30%,
+                rgba(0, 191, 255, 0.3) 60%, 
+                rgba(30, 144, 255, 0.4) 100%);
+            animation: oceanFlow 8s ease-in-out infinite;
+        }
+
+        @keyframes oceanFlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .waves {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,60 C150,120 350,0 600,60 C850,120 1050,0 1200,60 L1200,120 L0,120 Z" fill="%23ffffff" fill-opacity="0.6"/></svg>') repeat-x;
+            animation: wave 3s linear infinite;
+        }
+
+        .waves:nth-child(2) {
+            bottom: 12px;
+            height: 70px;
+            opacity: 0.4;
+            animation-delay: -1s;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,60 C150,120 350,0 600,60 C850,120 1050,0 1200,60 L1200,120 L0,120 Z" fill="%23ffffff" fill-opacity="0.4"/></svg>') repeat-x;
+        }
+
+        .waves:nth-child(3) {
+            bottom: 24px;
+            height: 60px;
+            opacity: 0.2;
+            animation-delay: -2s;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,60 C150,120 350,0 600,60 C850,120 1050,0 1200,60 L1200,120 L0,120 Z" fill="%23ffffff" fill-opacity="0.3"/></svg>') repeat-x;
+        }
+
+        @keyframes wave {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 1200px; }
+        }
+
+        .clouds {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+            opacity: 0.7;
+            animation: float 20s linear infinite;
+        }
+
+        .cloud:before, .cloud:after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+        }
+
+        .cloud1 {
+            width: 80px;
+            height: 40px;
+            top: 20%;
+            animation-duration: 25s;
+        }
+
+        .cloud1:before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 10px;
+        }
+
+        .cloud1:after {
+            width: 60px;
+            height: 40px;
+            top: -15px;
+            right: 10px;
+        }
+
+        .cloud2 {
+            width: 60px;
+            height: 30px;
+            top: 10%;
+            animation-duration: 30s;
+            animation-delay: -10s;
+        }
+
+        .cloud2:before {
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            left: 5px;
+        }
+
+        .cloud2:after {
+            width: 50px;
+            height: 30px;
+            top: -10px;
+            right: 8px;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(-100px); }
+            100% { transform: translateX(calc(100vw + 100px)); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .title {
+            font-size: 3.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #FFFFFF;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { 
+                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+                transform: scale(1);
+            }
+            to { 
+                filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5));
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5)); }
+            to { filter: drop-shadow(0 0 30px rgba(255, 165, 0, 0.8)); }
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            margin-bottom: 40px;
+            color: #FFFFFF;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .countdown {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            padding: 25px 20px;
+            min-width: 120px;
+            animation: bounce 2s ease-in-out infinite;
+            transition: transform 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .time-box:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.35);
+            border-color: rgba(255, 215, 0, 0.8);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .time-box:nth-child(1) { animation-delay: 0s; }
+        .time-box:nth-child(2) { animation-delay: 0.2s; }
+        .time-box:nth-child(3) { animation-delay: 0.4s; }
+        .time-box:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .time-number {
+            font-size: 3em;
+            font-weight: bold;
+            display: block;
+            color: #1E3A8A;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+        }
+
+        .time-label {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            color: #1E3A8A;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.6);
+        }
+
+        .time-label {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+
+        .destination-info {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            max-width: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .destination-info h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #FFD700;
+        }
+
+        .destination-info p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .palm-tree {
+            position: absolute;
+            bottom: 10px;
+            right: 50px;
+            font-size: 4em;
+            animation: sway 4s ease-in-out infinite;
+            z-index: 5;
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .sun {
+            position: absolute;
+            top: 60px;
+            right: 120px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, 
+                #FFD700 0%, 
+                #FFA500 60%, 
+                #FF8C00 100%);
+            border-radius: 50%;
+            animation: sunRotate 12s linear infinite;
+            box-shadow: 
+                0 0 40px rgba(255, 215, 0, 0.6),
+                0 0 80px rgba(255, 165, 0, 0.4),
+                0 0 120px rgba(255, 140, 0, 0.2);
+        }
+
+        .sun::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                rgba(255, 215, 0, 0.2) 0%, 
+                transparent 70%);
+            animation: sunPulse 6s ease-in-out infinite;
+        }
+
+        @keyframes sunPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.2); opacity: 0.6; }
+        }
+
+        @keyframes sunRotate {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        .particle:nth-child(odd) {
+            width: 4px;
+            height: 4px;
+            background: #FFD700;
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+        }
+
+        .particle:nth-child(even) {
+            width: 3px;
+            height: 3px;
+            background: #FFFFFF;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.7);
+        }
+
+        .particle:nth-child(3n) {
+            width: 5px;
+            height: 5px;
+            background: #00BFFF;
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.6);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(180deg); }
+        }
+
+        @keyframes spotlightMove {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -30px) scale(1.2); }
+            66% { transform: translate(-30px, 40px) scale(0.8); }
+        }
+
+        @keyframes floatUpDown {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.2em;
+                margin-bottom: 15px;
+            }
+            
+            .subtitle {
+                font-size: 1.1em;
+                margin-bottom: 25px;
+                padding: 0 15px;
+            }
+            
+            .countdown {
+                gap: 10px;
+                margin-bottom: 25px;
+            }
+            
+            .time-box {
+                min-width: 70px;
+                padding: 15px 10px;
+                border-radius: 12px;
+            }
+            
+            .time-number {
+                font-size: 2em;
+            }
+            
+            .time-label {
+                font-size: 0.8em;
+                margin-top: 5px;
+            }
+            
+            .destination-info {
+                margin: 15px;
+                padding: 15px;
+                max-width: 90%;
+            }
+            
+            .destination-info h3 {
+                font-size: 1.2em;
+                margin-bottom: 10px;
+            }
+            
+            .destination-info p {
+                font-size: 0.95em;
+                line-height: 1.5;
+            }
+            
+            .sun {
+                width: 60px;
+                height: 60px;
+                top: 40px;
+                right: 20px;
+            }
+            
+            .palm-tree {
+                font-size: 2.5em;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .floating-elements div {
+                font-size: 1.2em !important;
+            }
+            
+            .floating-elements div:nth-child(1) {
+                top: 10% !important;
+                left: 5% !important;
+            }
+            
+            .floating-elements div:nth-child(2) {
+                top: 85% !important;
+                right: 5% !important;
+            }
+            
+            .floating-elements div:nth-child(3) {
+                top: 25% !important;
+                right: 5% !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.8em;
+                margin-bottom: 10px;
+            }
+            
+            .subtitle {
+                font-size: 1em;
+                margin-bottom: 20px;
+            }
+            
+            .countdown {
+                flex-wrap: wrap;
+                gap: 8px;
+                justify-content: center;
+            }
+            
+            .time-box {
+                min-width: 60px;
+                padding: 12px 8px;
+                flex: 1;
+                max-width: 22%;
+            }
+            
+            .time-number {
+                font-size: 1.6em;
+            }
+            
+            .time-label {
+                font-size: 0.7em;
+            }
+            
+            .destination-info {
+                margin: 10px;
+                padding: 12px;
+            }
+            
+            .destination-info h3 {
+                font-size: 1.1em;
+            }
+            
+            .destination-info p {
+                font-size: 0.9em;
+            }
+            
+            .sun {
+                width: 40px;
+                height: 40px;
+                top: 30px;
+                right: 15px;
+            }
+            
+            .palm-tree {
+                font-size: 2em;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .title {
+                font-size: 1.6em;
+            }
+            
+            .time-box {
+                min-width: 55px;
+                padding: 10px 6px;
+            }
+            
+            .time-number {
+                font-size: 1.4em;
+            }
+            
+            .time-label {
+                font-size: 0.65em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ocean">
+        <div class="waves"></div>
+        <div class="waves"></div>
+        <div class="waves"></div>
+    </div>
+
+    <!-- Thêm spotlight effects nhẹ nhàng -->
+    <div class="spotlight" style="position: absolute; top: 20%; left: 15%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%); border-radius: 50%; animation: spotlightMove 20s ease-in-out infinite;"></div>
+
+    <!-- Thêm floating elements đơn giản -->
+    <div class="floating-elements">
+        <div style="position: absolute; top: 15%; left: 10%; font-size: 2em; animation: floatUpDown 10s ease-in-out infinite;">🌴</div>
+        <div style="position: absolute; top: 80%; right: 30%; font-size: 2.5em; animation: floatUpDown 8s ease-in-out infinite 2s;">🐚</div>
+        <div style="position: absolute; top: 30%; right: 10%; font-size: 1.8em; animation: floatUpDown 12s ease-in-out infinite 4s;">☀️</div>
+    </div>
+
+    <div class="clouds">
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+    </div>
+
+    <div class="sun"></div>
+    <div class="palm-tree">🌴</div>
+
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <h1 class="title">🏝️ PHÚ QUỐC 2025 🏝️</h1>
+        <p class="subtitle">Đếm ngược đến chuyến phiêu lưu đảo ngọc</p>
+        
+        <div class="countdown" id="countdown">
+            <div class="time-box">
+                <span class="time-number" id="days">00</span>
+                <div class="time-label">Ngày</div>
+            </div>
+            <div class="time-box">
+                <span class="time-number" id="hours">00</span>
+                <div class="time-label">Giờ</div>
+            </div>
+            <div class="time-box">
+                <span class="time-number" id="minutes">00</span>
+                <div class="time-label">Phút</div>
+            </div>
+            <div class="time-box">
+                <span class="time-number" id="seconds">00</span>
+                <div class="time-label">Giây</div>
+            </div>
+        </div>
+
+        <div class="destination-info">
+            <h3>🌊 Ngày khởi hành: 7 tháng 11, 2025</h3>
+            <p>Hãy chuẩn bị tinh thần cho những trải nghiệm tuyệt vời tại đảo ngọc Phú Quốc! 
+            Biển xanh, cát trắng, hải sản tươi ngon và những kỷ niệm không thể nào quên đang chờ đón bạn! 🍹🐠</p>
+        </div>
+    </div>
+
+    <script>
+        // Tạo particles đơn giản hơn
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 25; // Giảm số lượng
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                // Random animation delay
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                
+                // Random animation duration
+                particle.style.animationDuration = (3 + Math.random() * 3) + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Countdown function
+        function updateCountdown() {
+            const targetDate = new Date('2025-11-07T00:00:00+07:00').getTime();
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            } else {
+                // Đã đến ngày đi Phú Quốc!
+                document.getElementById('countdown').innerHTML = `
+                    <div class="time-box" style="animation: celebration 1s ease-in-out infinite;">
+                        <span class="time-number">🎉</span>
+                        <div class="time-label">Đã đến Phú Quốc!</div>
+                    </div>
+                `;
+                document.querySelector('.subtitle').textContent = 'Chúc bạn có chuyến đi tuyệt vời! 🏖️';
+            }
+        }
+
+        // Thêm CSS cho animation celebration
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes celebration {
+                0%, 100% { transform: scale(1) rotate(0deg); }
+                25% { transform: scale(1.1) rotate(-5deg); }
+                75% { transform: scale(1.1) rotate(5deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Tạo thêm mây đơn giản
+        function createMoreClouds() {
+            const cloudsContainer = document.querySelector('.clouds');
+
+            for (let i = 0; i < 3; i++) {
+                const cloud = document.createElement('div');
+                cloud.classList.add('cloud');
+                cloud.style.width = (60 + Math.random() * 40) + 'px';
+                cloud.style.height = (30 + Math.random() * 20) + 'px';
+                cloud.style.top = Math.random() * 30 + '%';
+                cloud.style.background = 'rgba(255, 255, 255, 0.6)';
+                cloud.style.animationDuration = (20 + Math.random() * 15) + 's';
+                cloud.style.animationDelay = -Math.random() * 25 + 's';
+                cloud.style.opacity = 0.5 + Math.random() * 0.3;
+                
+                cloudsContainer.appendChild(cloud);
+            }
+        }
+
+        // Khởi tạo
+        createParticles();
+        createMoreClouds();
+        updateCountdown();
+
+        // Cập nhật countdown mỗi giây
+        setInterval(updateCountdown, 1000);
+
+        // Thêm hiệu ứng click cho các time-box
+        document.querySelectorAll('.time-box').forEach(box => {
+            box.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95) rotateY(10deg)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        // Hiệu ứng click đơn giản hơn
+        document.addEventListener('click', function(e) {
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.left = e.clientX + 'px';
+                particle.style.top = e.clientY + 'px';
+                particle.style.width = '4px';
+                particle.style.height = '4px';
+                particle.style.background = '#FFD700';
+                particle.style.borderRadius = '50%';
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = '1000';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 2 + Math.random() * 3;
+                const dx = Math.cos(angle) * velocity;
+                const dy = Math.sin(angle) * velocity;
+                
+                document.body.appendChild(particle);
+                
+                let x = 0, y = 0, opacity = 1;
+                const animate = () => {
+                    x += dx;
+                    y += dy;
+                    opacity -= 0.02;
+                    
+                    particle.style.transform = `translate(${x}px, ${y}px)`;
+                    particle.style.opacity = opacity;
+                    
+                    if (opacity > 0) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        particle.remove();
+                    }
+                };
+                
+                requestAnimationFrame(animate);
+            }
+        });
+    </script>
+</body>
+</html>
